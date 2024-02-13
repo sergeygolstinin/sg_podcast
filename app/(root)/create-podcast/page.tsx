@@ -30,6 +30,7 @@ import GeneratePodcast from "@/components/GeneratePodcast"
 import GenerateThumbnail from "@/components/GenerateThumbnail"
 import { Loader } from "lucide-react"
 import { Id } from "@/convex/_generated/dataModel"
+import { VoiceType } from "@/types"
 
 const voiceCategories = ['alloy', 'shimmer', 'nova', 'echo', 'fable', 'onyx'];
 
@@ -49,7 +50,7 @@ const CreatePodcast = () => {
  const [audioStorageId, setAudioStorageId] = useState<Id<"_storage"> | null>(null)
  const [audioDuration, setAudioDuration] = useState(0);
 
- const [voiceType, setVoiceType] = useState<string | null>(null);
+ const [voiceType, setVoiceType] = useState<VoiceType | null>(null);
  const [voicePrompt, setVoicePrompt] = useState('');
 
  const [isSubmitting, setIsSubmitting] = useState(false);
@@ -65,7 +66,7 @@ const form = useForm<z.infer<typeof formSchema>>({
 })
 
 // 2. Define a submit handler.
-function onSubmit(values: z.infer<typeof formSchema>) {
+async function onSubmit(values: z.infer<typeof formSchema>) {
   // Do something with the form values.
   // ✅ This will be type-safe and validated.
   console.log(values)
@@ -77,7 +78,7 @@ function onSubmit(values: z.infer<typeof formSchema>) {
  
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-12 flex w-full flex-col">
-          <div className="flex flex-col gap-[30px] border-b border-blcack-5 pb-10">
+          <div className="flex flex-col gap-[30px] border-b border-black-5 pb-10">
           <FormField
           control={form.control}
           name="podcastTitle"
@@ -98,7 +99,7 @@ function onSubmit(values: z.infer<typeof formSchema>) {
           </Label>
 
 
-          <Select onValueChange={(value) => setVoiceType(value)}>
+          <Select onValueChange={(value) => setVoiceType(value as VoiceType)}>
             <SelectTrigger className={cn('text-16 w-full border-none bg-black-1 text-gray-1 focus:ring-offset-orange-1')}>
               <SelectValue placeholder="Select AI Voice" className="placeholder:text-gray-1"/>
             </SelectTrigger>
@@ -138,7 +139,7 @@ function onSubmit(values: z.infer<typeof formSchema>) {
           <GeneratePodcast 
            setAudioStorageId={setAudioStorageId}
            setAudio={setAudioUrl}
-           voiceType={voiceType}
+           voiceType={voiceType!}
            audio={audioUrl}
            voicePrompt={voicePrompt}
            setVoicePrompt={setVoicePrompt}

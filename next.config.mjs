@@ -9,7 +9,11 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'dusty-hound-417.convex.cloud'
-            }
+            },
+            {
+            protocol: 'https',
+            hostname: 'img.clerk.com'
+        }
         ]
     }
 };
